@@ -1,0 +1,37 @@
+name: Build APK
+on:
+  push:
+    branches: [main, master]
+  workflow_dispatch:
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+      - name: Install dependencies
+        run: npm install
+      - name: Add Android project
+        run: npx cap add android
+      - name: Set app icon
+        run: |
+          npm install --no-save @capacitor/assets@3.0.5
+          mkdir -p assets
+          cp icon-source.png assets/icon-only.png
+          cp icon-source.png assets/icon-foreground.png
+          npx capacitor-assets generate --android --iconBackgroundColor '#0A7C6E' --iconBackgroundColorDark '#0A7C6E' || true
+      - name: Sync web files
+        run: npx cap sync android
+      - name: Build debug APK
+        working-directory: android
+        run: ./gradlew assembleDebug
+      - uses: actions/upload-artifact@v4
+        with:
+          name: goc-chu-han-apk
+          path: android/app/build/outputs/apk/debug/app-debug.apk
