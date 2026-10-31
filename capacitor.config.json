@@ -1,0 +1,7 @@
+{
+  "appId": "com.gochuhan.app",
+  "appName": "Gốc Chữ Hán",
+  "webDir": "www",
+  "backgroundColor": "#EDEFF5",
+  "android": { "allowMixedContent": false }
+}
