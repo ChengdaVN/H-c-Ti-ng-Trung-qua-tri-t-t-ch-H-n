@@ -19,13 +19,6 @@ jobs:
         run: npm install
       - name: Add Android project
         run: npx cap add android
-      - name: Set app icon
-        run: |
-          npm install --no-save @capacitor/assets@3.0.5
-          mkdir -p assets
-          cp icon-source.png assets/icon-only.png
-          cp icon-source.png assets/icon-foreground.png
-          npx capacitor-assets generate --android --iconBackgroundColor '#0A7C6E' --iconBackgroundColorDark '#0A7C6E' || true
       - name: Sync web files
         run: npx cap sync android
       - name: Build debug APK
